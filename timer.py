@@ -30,7 +30,7 @@ class MyWindow(Gtk.Window):
         hbox.pack_start(vbox, True, True, 0)
 
         #label for automated timer
-        self.label1 = Gtk.Label(xalign=40)
+        self.label1 = Gtk.Label(xalign=40.0)
         self.label1.set_margin_bottom(20)
         vbox.pack_start(self.label1, True, True, 0)
 
@@ -58,7 +58,6 @@ class MyWindow(Gtk.Window):
     def update_timer(self):
         minutes = self.remaining // 60
         seconds = self.remaining % 60
-        # self.label1.set_text(f"{minutes:02d}:{seconds:02d}")
         self.label1.set_markup(f'<span font="24" weight="bold">{minutes:02d}:{seconds:02d}</span>')
         return True
 
@@ -82,7 +81,7 @@ class MyWindow(Gtk.Window):
             state = "on"
             if not self.running:
                 self.running = True
-                self.thread = threading.Thread(target= self.timer_thread)
+                self.thread = threading.Thread(target= self.timer_thread, daemon= True) # important to set daemon to true as it will kill the thread when main program is exited
                 self.thread.start()
         else:
             state = "off"
@@ -91,6 +90,8 @@ class MyWindow(Gtk.Window):
             self.running = False
        
         print("Button", name, "was turned", state)
+
+   
 
 win = MyWindow()
 win.connect("destroy", Gtk.main_quit)
