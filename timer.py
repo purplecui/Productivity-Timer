@@ -8,14 +8,15 @@ from gi.repository import Gtk, GLib
 class MyWindow(Gtk.Window):
     def __init__(self):
         super().__init__(title="Timer")
-        self.set_border_width(15)
+        self.set_border_width(30)
 
-        self.duration = 5400
+        #the duration for countdown goes here but only in seconds
+        self.duration = 5400 #5400 secs == 90 mins
         self.remaining = self.duration
         self.running = False
         self.thread = None
 
-        box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        box_outer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=50)
         self.add(box_outer)
 
         listbox = Gtk.ListBox()
@@ -23,20 +24,24 @@ class MyWindow(Gtk.Window):
         box_outer.pack_start(listbox, True, True, 0)
 
         row = Gtk.ListBoxRow()
-        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
+        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=80)
         row.add(hbox)
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing= 80)
         hbox.pack_start(vbox, True, True, 0)
 
-        self.label1 = Gtk.Label(xalign=0)
+        #label for automated timer
+        self.label1 = Gtk.Label(xalign=40)
+        self.label1.set_margin_bottom(20)
         vbox.pack_start(self.label1, True, True, 0)
 
         listbox.add(row)
+        
 
         row = Gtk.ListBoxRow()
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=50)
         row.add(hbox)
 
+        # TOGGLE button for multiple(two) state signal
         self.button1 = Gtk.ToggleButton(label="Start")
         self.button1.connect("toggled", self.on_start_toggled, "1")
 
@@ -53,7 +58,8 @@ class MyWindow(Gtk.Window):
     def update_timer(self):
         minutes = self.remaining // 60
         seconds = self.remaining % 60
-        self.label1.set_text(f"{minutes:02d}:{seconds:02d}")
+        # self.label1.set_text(f"{minutes:02d}:{seconds:02d}")
+        self.label1.set_markup(f'<span font="24" weight="bold">{minutes:02d}:{seconds:02d}</span>')
         return True
 
     def timer_thread(self):
@@ -71,6 +77,7 @@ class MyWindow(Gtk.Window):
 
     def on_start_toggled(self, button, name):
         if button.get_active():
+            # changes button to stop after initializing counter
             button.set_label("Stop")
             state = "on"
             if not self.running:
@@ -79,6 +86,7 @@ class MyWindow(Gtk.Window):
                 self.thread.start()
         else:
             state = "off"
+            #changes back to start after pressing
             button.set_label("Start")
             self.running = False
        
