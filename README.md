@@ -42,6 +42,7 @@ sudo dnf install gtk3 python3-gobject
 
 ## Creating an Executable
 
+Note: The current repo already has executable present. To create in your device, copy the timer.py file to next folder or delete the executable files.
 To create an executable file using `pyinstaller`, follow these steps:
 
 1. Install `pyinstaller`:
