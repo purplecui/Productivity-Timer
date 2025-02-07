@@ -30,7 +30,7 @@ class MyWindow(Gtk.Window):
         hbox.pack_start(vbox, True, True, 0)
 
         #label for automated timer
-        self.label1 = Gtk.Label(xalign=40.0)
+        self.label1 = Gtk.Label(xalign=0.4)
         self.label1.set_margin_bottom(20)
         vbox.pack_start(self.label1, True, True, 0)
 
@@ -43,7 +43,7 @@ class MyWindow(Gtk.Window):
 
         # TOGGLE button for multiple(two) state signal
         self.button1 = Gtk.ToggleButton(label="Start")
-        self.button1.connect("toggled", self.on_start_toggled, "1")
+        self.button1.connect("toggled", self.on_start_toggled)
 
         self.button2 = Gtk.Button(label="Reset")
         self.button2.connect("clicked", self.on_reset_clicked)
@@ -74,7 +74,7 @@ class MyWindow(Gtk.Window):
         self.remaining = self.duration
         self.update_timer()
 
-    def on_start_toggled(self, button, name):
+    def on_start_toggled(self, button):
         if button.get_active():
             # changes button to stop after initializing counter
             button.set_label("Stop")
@@ -89,7 +89,7 @@ class MyWindow(Gtk.Window):
             button.set_label("Start")
             self.running = False
        
-        print("Button", name, "was turned", state)
+        print("Start was turned", state)
 
    
 
